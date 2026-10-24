@@ -2,6 +2,16 @@
 
 Draft for morning review. Nothing here has been executed. I have no access to your accounts or devices, and none of your data should ever be pasted into this session.
 
+## Your situation (assessed)
+
+- LastPass account created around 2019, so it likely started at 100,100 iterations. It shows 600,000 now, raised after the 2022 theft.
+- The master password was strong and unique.
+- No crypto seed phrases or wallet keys were ever stored.
+
+**Verdict: best case.** The stolen 2022 copy of your vault is very unlikely to be cracked. Treat migration and rotation as planned hardening, not an emergency.
+
+**What is still exposed regardless:** the 2022 theft included unencrypted **website URLs**, plus your name, email, phone, and billing address. Attackers can read the list of sites where you have accounts (banks, brokerages, and so on) and can tie it to you. The main ongoing risk is **targeted phishing, impersonated support calls, and SIM-swap attempts**, not cracking. Phase D (section 6) is built around that.
+
 ## 0. Ground rules
 
 1. **Never give me, or any chat or cloud tool, a password, vault export, or 2FA seed.** This session runs in a cloud container. All export and import steps happen on your own machine.
@@ -64,16 +74,23 @@ Do this on a **trusted, up-to-date personal computer**, not a work or shared mac
 4. **Securely destroy the CSV**: delete it and empty the encrypted volume. On SSDs, deleting the whole encrypted container, not just the file, is the reliable approach.
 5. Keep LastPass logged in but untouched until Phase D progresses.
 
-## 6. Phase D: Rotate secrets by tier (the actual security work; days to weeks)
+## 6. Phase D: Harden and rotate by tier (days to weeks)
 
-Assume everything in the old vault is exposed until rotated.
+The vault is very likely uncracked, so this is a measured cleanup. The priority is making the exposed list of sites useless to phishers.
 
 | Tier | Accounts | When |
 |---|---|---|
-| **0: Keys to the kingdom** | Primary email(s), Apple ID or Google account, phone carrier (set a port-out PIN), domain registrar, the new password manager | First 24 hours |
-| **1: Money** | Banks, brokerages, retirement, payment apps, credit cards, crypto exchanges, wallets and seed phrases (move funds to new wallets) | Within 3 days |
-| **2: Identity and recovery** | Government and tax sites, healthcare, insurance, cloud storage, social media, developer accounts such as GitHub, cloud providers and API keys | Within 1–2 weeks |
+| **0: Keys to the kingdom** | Primary email(s), Apple ID or Google account, phone carrier (set a port-out PIN), domain registrar, the new password manager. Freeze credit at Equifax, Experian, and TransUnion (free). | First week |
+| **1: Money** | Banks, brokerages, retirement, payment apps, credit cards, crypto exchanges. Move these to a **new private email or alias** that was never in LastPass and isn't public. | Weeks 1–2 |
+| **2: Identity and recovery** | Government and tax sites, healthcare, insurance, cloud storage, social media, developer accounts such as GitHub, cloud providers and API keys | Weeks 2–4 |
 | **3: Everything else** | Shopping, streaming, forums, one-offs | Over time. Delete accounts you no longer use. |
+
+Review the vault once for items that can't be rotated and handle each:
+- Regenerate 2FA backup codes and re-enroll any authenticator setup keys that were stored in notes.
+- Change security-question answers to random values kept in the new manager.
+- Note which ID numbers were stored (SSN, passport, license). The credit freeze covers most of the risk from those.
+
+Phishing rule from now on: never act on an unexpected "security alert", email, text, or call. Open the app or type the site address yourself.
 
 For each account:
 - Generate a unique random password in the new manager.
@@ -105,20 +122,21 @@ Also rotate API keys and tokens, SSH keys if they were stored, and Wi-Fi and rou
 - A small offline script that reads your exported CSV, **never prints or transmits passwords**, and produces a prioritized rotation checklist: tiering by domain, reused-password detection, weak-password flags, and dead or duplicate entries.
 - A progress tracker (spreadsheet or checklist) for the rotation phase.
 
-## 10. Questions for the morning
+## 10. Remaining questions
 
-1. Cloud or local? 1Password, Bitwarden, or KeePassXC?
-2. Roughly how large is the vault, and how old is the LastPass account (and the master password)? This sets how urgent Tier 1 is.
-3. Any crypto, or seed phrases stored in LastPass?
-4. How many devices and OSes (iPhone, Android, Mac, Windows, Linux)?
-5. Family or shared vaults needed?
-6. Budget for two hardware keys (about $50–$100 each)?
+Answered: account age (about 2019), master password (strong and unique), seed phrases (none).
+
+1. Cloud or local? 1Password, Bitwarden, or KeePassXC? I recommend 1Password for its Secret Key design (see section 2).
+2. Roughly how many items are in the vault?
+3. How many devices and OSes (iPhone, Android, Mac, Windows, Linux)?
+4. Family or shared vaults needed?
+5. Budget for two hardware keys (about $50–$100 each)?
 
 ## Suggested timeline
 
 | When | What |
 |---|---|
-| Tonight | Nothing is required. Optionally do Phase A step 1–3 if you want the export ready. |
-| Day 1 | Choose the product, do Phases B and C, and start Tier 0 rotation. |
-| Days 2–3 | Tier 1 rotation. |
-| Weeks 1–2 | Tiers 2–3, then Phase E. |
+| This week | Choose the product, order hardware keys, do Phases A–C, freeze credit, set a carrier PIN. |
+| Weeks 1–2 | Tier 0–1, including the new private email for financial accounts. |
+| Weeks 2–4 | Tier 2, then Phase E (delete LastPass). |
+| Ongoing | Tier 3 and Phase F. |
